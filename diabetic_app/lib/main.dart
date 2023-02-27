@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'diabetic_app/lib/View/login_page.dart';
+import 'package:diabetic_app/View/login_page.dart';
 
 void main() {
   runApp(const MyApp());
