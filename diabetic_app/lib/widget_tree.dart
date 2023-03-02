@@ -1,6 +1,7 @@
 import 'package:diabetic_app/auth.dart';
 import 'package:diabetic_app/pages/home_page.dart';
 import 'package:diabetic_app/pages/login_register_page.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class WidgetTree extends StatefulWidget {
@@ -14,14 +15,16 @@ class WidgetTree extends StatefulWidget {
 class _WidgetTreeState extends State<WidgetTree> {
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder(
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return HomePage();
-          } else {
-            return const LoginPage();
-          }
-        }
-    );
+   return StreamBuilder(
+       stream: Auth().authStateChanges,
+       builder: (context, snapshot) {
+         if(snapshot.hasData) {
+           return HomePage();
+         } else {
+           return const LoginPage();
+         }
+       },
+   );
   }
+
 }

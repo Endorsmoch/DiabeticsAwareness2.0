@@ -15,8 +15,8 @@ class HomePage extends StatelessWidget {
     return const Text('Diabetic App');
   }
 
-  Widget _userId() {
-    return Text(user?.email ?? 'Email de Usuario');
+  Widget _userUid() {
+    return Text(user?.email ?? 'Correo de Usuario');
   }
 
   Widget _signOutButton() {
@@ -40,11 +40,12 @@ class HomePage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            _userId(),
-            _signOutButton(),
+            _userUid(),
+            _signOutButton()
           ],
         ),
       ),
     );
   }
+
 }

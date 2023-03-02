@@ -18,7 +18,7 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController _controllerPassword = TextEditingController();
 
   Future<void> signInWithEmailAndPassword() async {
-    try{
+    try {
       await Auth().signInWithEmailAndPassword(
           email: _controllerEmail.text,
           password: _controllerPassword.text,
@@ -31,7 +31,7 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Future<void> createUserWithEmailAndPassword() async {
-    try{
+    try {
       await Auth().createUserWithEmailAndPassword(
         email: _controllerEmail.text,
         password: _controllerPassword.text,
@@ -50,8 +50,9 @@ class _LoginPageState extends State<LoginPage> {
   Widget _entryField(
       String title,
       TextEditingController controller,
-      ){
+      ) {
     return TextField(
+      controller: controller,
       decoration: InputDecoration(
         labelText: title,
       ),
@@ -62,24 +63,25 @@ class _LoginPageState extends State<LoginPage> {
     return Text(errorMessage == '' ? '' : 'Humm ? $errorMessage');
   }
 
-  Widget _submitButton(){
+  Widget _submitButton() {
     return ElevatedButton(
         onPressed:
-          isLogin ? signInWithEmailAndPassword : createUserWithEmailAndPassword,
-        child: Text(isLogin ? 'Iniciar Sesion' : 'Resgistrarse'),
+        isLogin ? signInWithEmailAndPassword : createUserWithEmailAndPassword,
+        child: Text(isLogin ? 'Iniciar Sesión' : 'Registrarse'),
     );
   }
 
-  Widget _loginOrRegisterButton(){
+  Widget _loginOrRegisterButton() {
     return TextButton(
-      onPressed: () {
-        setState(() {
-          isLogin = !isLogin;
-        });
-      },
-      child: Text(isLogin ? 'Regístrese' : 'Inicie Sesión'),
+        onPressed: () {
+          setState(() {
+            isLogin = !isLogin;
+          });
+        },
+        child: Text(isLogin ? 'Regístrese' : 'Inicie Sesión'),
     );
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -99,7 +101,7 @@ class _LoginPageState extends State<LoginPage> {
             _errorMessage(),
             _submitButton(),
             _loginOrRegisterButton(),
-          ]
+          ],
         ),
       ),
     );

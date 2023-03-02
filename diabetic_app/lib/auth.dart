@@ -13,7 +13,7 @@ class Auth {
   }) async {
     await _firebaseAuth.signInWithEmailAndPassword(
         email: email,
-        password: password
+        password: password,
     );
   }
 
@@ -23,7 +23,7 @@ class Auth {
   }) async {
     await _firebaseAuth.createUserWithEmailAndPassword(
         email: email,
-        password: password
+        password: password,
     );
   }
 
