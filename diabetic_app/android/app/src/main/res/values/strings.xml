@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<resources>
+    <string name="app_name" >DiabeticAwareness</string>
+    <string name="facebook_app_id">893474651935803</string>
+    <string name="fb_login_proctocol_scheme">fb893474651935803</string>
+
+</resources>
