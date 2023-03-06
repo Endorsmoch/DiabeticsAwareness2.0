@@ -82,6 +82,28 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
+  Widget _loginWithFacebookButton(){
+    return ElevatedButton(
+        onPressed:
+        isLogin ? signInWithEmailAndPassword : createUserWithEmailAndPassword,
+        child: Text('Inicia Sesión con Facebook'),
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.blue,
+        ),
+    );
+  }
+
+  Widget _loginWithGoogleButton(){
+    return ElevatedButton(
+        onPressed:
+        isLogin ? signInWithEmailAndPassword : createUserWithEmailAndPassword,
+        child: Text('Inicia Sesión con Google'),
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.orangeAccent,
+        ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -101,6 +123,9 @@ class _LoginPageState extends State<LoginPage> {
             _errorMessage(),
             _submitButton(),
             _loginOrRegisterButton(),
+            const SizedBox(height: 80,),
+            _loginWithFacebookButton(),
+            _loginWithGoogleButton(),
           ],
         ),
       ),
