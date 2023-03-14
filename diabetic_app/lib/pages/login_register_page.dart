@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../auth.dart';
@@ -13,6 +15,7 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   String? errorMessage = '';
   bool isLogin = true;
+  Map _userObj = {};
 
   final TextEditingController _controllerEmail = TextEditingController();
   final TextEditingController _controllerPassword = TextEditingController();
@@ -40,6 +43,21 @@ class _LoginPageState extends State<LoginPage> {
       setState(() {
         errorMessage = e.message;
       });
+    }
+  }
+
+  Future<void> signInWithFacebook() async {
+    try {
+      await Auth().signInWithFacebook();
+    } on FirebaseAuthException catch (e,s) {
+      print('Error $e, Stacktrace:$s');
+    }
+  }
+  Future<void> signInWithGoogle() async {
+    try{
+      await Auth().signInWithGoogle();
+    } on FirebaseAuthException catch (e,s) {
+      print('Error $e, Stacktrace: $s');
     }
   }
 
@@ -84,8 +102,7 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget _loginWithFacebookButton(){
     return ElevatedButton(
-        onPressed:
-        isLogin ? signInWithEmailAndPassword : createUserWithEmailAndPassword,
+        onPressed: signInWithFacebook,
         child: Text('Inicia Sesión con Facebook'),
         style: ElevatedButton.styleFrom(
           backgroundColor: Colors.blue,
@@ -95,8 +112,7 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget _loginWithGoogleButton(){
     return ElevatedButton(
-        onPressed:
-        isLogin ? signInWithEmailAndPassword : createUserWithEmailAndPassword,
+        onPressed: signInWithGoogle,
         child: Text('Inicia Sesión con Google'),
         style: ElevatedButton.styleFrom(
           backgroundColor: Colors.orangeAccent,
