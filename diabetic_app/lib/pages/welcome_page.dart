@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:diabetic_app/pages/login_register_page.dart';
+import 'package:diabetic_app/pages/eat_game_page.dart';
 
 class WelcomePage extends StatelessWidget {
   const WelcomePage({Key? key}) : super(key: key);
@@ -20,6 +21,18 @@ class WelcomePage extends StatelessWidget {
     );
   }
 
+  Widget _eatGameButton(BuildContext context) {
+    return ElevatedButton(
+        onPressed: () {
+          Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => EatGamePage()),
+          );
+    },
+        child: const Text('Ir al Juego'),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,6 +48,7 @@ class WelcomePage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             _loginButton(context),
+            _eatGameButton(context),
           ],
         ),
       ),
