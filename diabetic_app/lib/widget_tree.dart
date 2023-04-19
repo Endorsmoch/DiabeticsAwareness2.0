@@ -1,6 +1,7 @@
 import 'package:diabetic_app/auth.dart';
 import 'package:diabetic_app/pages/home_page.dart';
 import 'package:diabetic_app/pages/login_register_page.dart';
+import 'package:diabetic_app/pages/welcome_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -21,7 +22,7 @@ class _WidgetTreeState extends State<WidgetTree> {
          if(snapshot.hasData) {
            return HomePage();
          } else {
-           return const LoginPage();
+           return const WelcomePage();
          }
        },
    );
