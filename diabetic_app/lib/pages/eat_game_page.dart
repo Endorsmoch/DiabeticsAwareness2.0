@@ -1,3 +1,4 @@
+import 'package:diabetic_app/controllers/food_rain.dart';
 import 'package:flutter/material.dart';
 import 'package:diabetic_app/my_widgets/my_movable_character.dart';
 import 'package:diabetic_app/my_widgets/bad_food.dart';
