@@ -9,6 +9,10 @@ class BadFood extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.red,
         borderRadius: BorderRadius.circular(10),
+        border: Border.all(
+          width: 3,
+          color: Colors.black
+        )
       ),
     );
   }

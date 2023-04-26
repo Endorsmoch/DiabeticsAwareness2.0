@@ -1,8 +1,7 @@
 import 'package:diabetic_app/controllers/food_rain.dart';
 import 'package:flutter/material.dart';
 import 'package:diabetic_app/my_widgets/my_movable_character.dart';
-import 'package:diabetic_app/my_widgets/bad_food.dart';
-import 'package:diabetic_app/my_widgets/good_food.dart';
+import 'package:diabetic_app/controllers/food_rain.dart';
 
 class EatGamePage extends StatelessWidget {
   const EatGamePage({Key? key}) : super(key: key);
@@ -30,8 +29,7 @@ class EatGamePage extends StatelessWidget {
                   color: Colors.white54,
                   child: Row(
                     children: <Widget>[
-                      GoodFood(),
-                      BadFood(),
+                      FoodRain()
                     ],
                   ),
                 ),
