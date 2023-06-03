@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:math';
 
 void readJSONFromFile(int level) {
   File quizFile = File('lib/lvl_questions/Preguntas_$level.txt');
@@ -29,7 +30,10 @@ void readJSONFromFile(int level) {
   }
 }
 
-/*void main() {
-  readJSONFromFile(2);
-}*/
+void generateOptionWidgets(int options) {
+  for (int i = 0; i < options; i++){
+    var random = new Random();
+
+  }
+}
 
