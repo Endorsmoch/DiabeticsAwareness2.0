@@ -28,34 +28,54 @@ class QuizPage extends StatefulWidget {
 
 class _QuizPageState extends State<QuizPage> {
   QuizController quizController = QuizController();
-  List<QuizQuestion> questions  = [];
+  List<QuizQuestion> questions = [];
+  bool gameStarted = false;
 
   int showedQuestions = 0;
 
   @override
   void initState(){
     super.initState();
+  }
+
+  //Se esperará a que se carguen las preguntas antes de cargar el arreglo con los Widgets.
+  /*Future<List<QuizQuestion>> loadQuestionsFromJSON() async {
+    quizController.readJSONFromFile(1);
+    return quizController.generateOptionWidgets(3);
+  }*/
+
+  void startQuiz(){
     quizController.readJSONFromFile(1);
     questions = quizController.generateOptionWidgets(3);
+    gameStarted = true;
   }
 
   @override
-  Widget build(BuildContext context){
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Los hábitos de Tolok´in'),
+        title: const Text('¡Bienvenido al Quiz!'),
       ),
-      body: Center(
-        child: Container(
-          width: 200,
-          height: 200,
-          alignment: Alignment.center,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
-            color: Colors.grey
+      body: Column(
+        children: [
+          gameStarted ? Container(
+            decoration: BoxDecoration(
+              color: Colors.lightGreenAccent,
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Text('Juego Iniciado'),
+          ) : Container(
+            alignment: Alignment.topCenter,
+            child: ElevatedButton(
+              onPressed: startQuiz,
+              child: SizedBox(
+                width: 100,
+                height: 70,
+                child: Text('Iniciar Quiz'),
+              ),
+            ),
           ),
-          child: Text(questions.isNotEmpty ? questions[0].question : 'No hay preguntas'),
-        ),
+        ],
       ),
     );
   }

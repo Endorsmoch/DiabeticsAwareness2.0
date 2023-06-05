@@ -1,0 +1,39 @@
+{
+    "preguntas": [
+        {
+            "texto": "¿La insulina que me da el doctor es como que la que produce mi cuerpo?",
+            "respuestas": {
+                "correcta": "Verdadero",
+                "incorrectas": ["Falso"]
+            } 
+        },
+        {
+            "texto": "¿Si un día se me olvidó tomar mi pastilla qué debo hacer?",
+            "respuestas": {
+                "correcta": "Continuar con mi tratamiento como está indicado",
+                "incorrectas": ["Tomar el doble al día siguiente", "Ir a consultar de urgencia"]
+            } 
+        },
+        {
+            "texto": "¿Tener el azúcar muy bajo también es malo? ",
+            "respuestas": {
+                "correcta": "Verdadero",
+                "incorrectas": ["Falso"]
+            } 
+        },
+        {
+            "texto": "¿Si tengo diabetes y no he desayunado cuánto debo tener de azúcar?",
+            "respuestas": {
+                "correcta": "Menos de 130 mg/dL",
+                "incorrectas": ["Menos de 250 mg/dL", "Menos de 180 mg/dL"]
+            } 
+        },
+        {
+            "texto": "¿La insulina puede afectar mi vista?",
+            "respuestas": {
+                "correcta": "Verdadero",
+                "incorrectas": ["Falso"]
+            } 
+        }
+    ]
+}

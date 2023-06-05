@@ -1,10 +1,9 @@
 import 'dart:convert';
-import 'dart:io';
 import 'dart:math';
 
 import 'package:diabetic_app/my_widgets/quiz_option_widget.dart';
 import 'package:diabetic_app/my_classes/quiz_question.dart';
-
+import 'package:flutter/services.dart';
 
 class QuizController {
   List<String> questions = [];
@@ -12,14 +11,12 @@ class QuizController {
   List<List<String>> incorrectOpts = [];
   List<QuizQuestion> quizQuestions = [];
 
-  void readJSONFromFile(int level) {
+  Future<void> readJSONFromFile(int level) async {
     try {
+      final String response = await rootBundle.loadString('assets/question_files/Preguntas_$level.txt');
+      final data = await json.decode(response);
 
-      File quizFile = File('lib/lvl_questions/Preguntas_$level.txt');
-      String jsonString = quizFile.readAsStringSync();
-
-      Map<String, dynamic> jsonData = jsonDecode(jsonString);
-      List<dynamic> questionsList = jsonData['preguntas'];
+      List<dynamic> questionsList = data['preguntas'];
 
       for (var question in questionsList) {
         questions.add(question['texto']);
@@ -67,7 +64,10 @@ class QuizController {
     return quizQuestions;
   }
 
+
 }
+
+
 
 
 
