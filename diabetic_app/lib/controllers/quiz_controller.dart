@@ -69,9 +69,6 @@ class QuizController {
 
 }
 
-void main() {
-  QuizController quiz = QuizController();
-  quiz.readJSONFromFile(1);
-}
+
 
 
