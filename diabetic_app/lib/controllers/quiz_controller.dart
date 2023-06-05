@@ -2,38 +2,76 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 
-void readJSONFromFile(int level) {
-  File quizFile = File('lib/lvl_questions/Preguntas_$level.txt');
-  String jsonString = quizFile.readAsStringSync();
+import 'package:diabetic_app/my_widgets/quiz_option_widget.dart';
+import 'package:diabetic_app/my_classes/quiz_question.dart';
 
-  Map<String, dynamic> jsonData = jsonDecode(jsonString);
 
+class QuizController {
   List<String> questions = [];
   List<String> correctOpts = [];
   List<List<String>> incorrectOpts = [];
+  List<QuizQuestion> quizQuestions = [];
 
-  List<dynamic> questionsList = jsonData['preguntas'];
+  void readJSONFromFile(int level) {
+    try {
 
-  for (var question in questionsList) {
-    questions.add(question['texto']);
-    correctOpts.add(question['respuestas']['correcta']);
-    incorrectOpts.add(List<String>.from(question['respuestas']['incorrectas']));
-  }
+      File quizFile = File('lib/lvl_questions/Preguntas_$level.txt');
+      String jsonString = quizFile.readAsStringSync();
 
-  for (int i = 0; i < 6; i++){
-    print('Pregunta Num: $i:');
-    print(questions[i]);
-    print(correctOpts[i]);
-    for (int j = 0; j < incorrectOpts[i].length; j++){
-      print(incorrectOpts[i][j]);
+      Map<String, dynamic> jsonData = jsonDecode(jsonString);
+      List<dynamic> questionsList = jsonData['preguntas'];
+
+      for (var question in questionsList) {
+        questions.add(question['texto']);
+        correctOpts.add(question['respuestas']['correcta']);
+        incorrectOpts.add(
+            List<String>.from(question['respuestas']['incorrectas'])
+        );
+      }
+
+      for (int i = 0; i < 6; i++){
+        print('Pregunta: $i');
+        print(questions[i]);
+      }
+
+    } catch(e) {
+      print('Exception catched: $e');
     }
   }
-}
 
-void generateOptionWidgets(int options) {
-  for (int i = 0; i < options; i++){
-    var random = new Random();
+  List<QuizQuestion> generateOptionWidgets(int numQuestions) {
+    try {
 
+      //Ciclo en el que se seleccionan aleatoriamente 'n=options' preguntas y sus respectivas opciones y se preparan los widgets
+      for (int i = 0; i < numQuestions; i++){
+        List<QuizOptionWidget> optsWidgets = [];
+        var random = new Random();
+
+        //Lo siguiente se hace por si los archivos JSON tienen cantidad de preguntas distintas.
+        int randomNum = random.nextInt(questions.length); //Se elige un valor entre 0 - el tamaño del arreglo de preguntas.
+
+        optsWidgets.add(QuizOptionWidget(text: correctOpts[randomNum], isCorrect: true)); //Agregamos la opción correcta.
+
+        //Agregamos las opciones incorrectas
+        for(int j = 0; j < incorrectOpts[randomNum].length; j++){
+          optsWidgets.add(QuizOptionWidget(text: incorrectOpts[randomNum][j], isCorrect: false));
+        }
+
+        //Creamos el objeto de la pregunta con sus respectivos Widgets de opción.
+        quizQuestions.add(QuizQuestion(question: questions[randomNum], quizOptions: optsWidgets));
+      }
+
+    } catch(e) {
+      print('Exception catched: $e');
+    }
+    return quizQuestions;
   }
+
 }
+
+void main() {
+  QuizController quiz = QuizController();
+  quiz.readJSONFromFile(1);
+}
+
 
