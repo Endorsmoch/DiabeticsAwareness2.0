@@ -25,12 +25,6 @@ class QuizController {
             List<String>.from(question['respuestas']['incorrectas'])
         );
       }
-
-      for (int i = 0; i < 6; i++){
-        print('Pregunta: $i');
-        print(questions[i]);
-      }
-
     } catch(e) {
       print('Exception catched: $e');
     }
@@ -59,7 +53,7 @@ class QuizController {
       }
 
     } catch(e) {
-      print('Exception catched: $e');
+      print('Exception catched in GenerateOption: $e');
     }
     return quizQuestions;
   }

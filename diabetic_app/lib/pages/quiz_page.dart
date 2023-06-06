@@ -44,10 +44,12 @@ class _QuizPageState extends State<QuizPage> {
     return quizController.generateOptionWidgets(3);
   }*/
 
-  void startQuiz(){
-    quizController.readJSONFromFile(1);
+  void startQuiz() async {
+     await quizController.readJSONFromFile(1);
     questions = quizController.generateOptionWidgets(3);
-    gameStarted = true;
+    setState(() {
+      gameStarted = true;
+    });
   }
 
   @override
@@ -63,7 +65,13 @@ class _QuizPageState extends State<QuizPage> {
               color: Colors.lightGreenAccent,
               borderRadius: BorderRadius.circular(10),
             ),
-            child: Text('Juego Iniciado'),
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.blueGrey,
+              ),
+              alignment: Alignment.center,
+              child: Text(questions[0].question),
+            ),
           ) : Container(
             alignment: Alignment.topCenter,
             child: ElevatedButton(
