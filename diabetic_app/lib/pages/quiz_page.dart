@@ -32,6 +32,7 @@ class _QuizPageState extends State<QuizPage> {
   QuizQuestion pickedQuestion = QuizQuestion.empty();
 
   bool gameStarted = false;
+  bool showCard = false;
 
   @override
   void initState(){
@@ -60,6 +61,18 @@ class _QuizPageState extends State<QuizPage> {
     }
   }
 
+  void presentQuestionCard(){
+    setState(() {
+      showCard = true;
+    });
+  }
+
+  void disposeQuestionCard(){
+    setState(() {
+      showCard = false;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -78,7 +91,7 @@ class _QuizPageState extends State<QuizPage> {
                 color: Colors.blueGrey,
               ),
               alignment: Alignment.center,
-              child: Text(questions[0].question),
+              child: _quizBackgroundLayout(),
             ),
           ) : Container(
             alignment: Alignment.center,
@@ -98,8 +111,8 @@ class _QuizPageState extends State<QuizPage> {
 
   Widget _streetPaint(){
     return Container(
-      width: 70,
-      height: 20,
+      width: 30,
+      height: 10,
       color: Colors.yellow,
     );
   }
@@ -126,25 +139,78 @@ class _QuizPageState extends State<QuizPage> {
     );
   }
 
-  Widget _quizBackgroundLayout(){
-    return SizedBox(
-      child: Column(
-        children: [
-          Row(),
-          Row(
-            children: [_streetBox()],
-          ),
-          Row(),
-          Row(
-            children: [_streetBox()],
-          ),
-          Row(),
-          Row(
-            children: [_streetPaint()],
-          ),
-          Row(),
-        ],
+  Widget _grassBox() {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.lightGreen,
       ),
+    );
+  }
+
+  Widget _quizBackgroundLayout(){
+    return Container(
+      height: double.infinity,
+        child: InkWell(
+          onTap: presentQuestionCard,
+          child: Stack(
+            children: [
+              Column(
+                children: [
+                  Row(
+                    children: [_grassBox()],
+                  ),
+                  Row(
+                    children: [_streetBox()],
+                  ),
+                  Row(
+                    children: [_grassBox()],
+                  ),
+                  Row(
+                    children: [_streetBox()],
+                  ),
+                  Row(
+                    children: [_grassBox()],
+                  ),
+                  Row(
+                    children: [_streetBox()],
+                  ),
+                  Row(
+                    children: [_grassBox()],
+                  ),
+                ],
+              ),
+              Positioned.fill(
+                  child: GestureDetector(
+                    onTap: disposeQuestionCard,
+                    child: Card(
+                        elevation: 4,
+                        child: Container(
+                          padding: EdgeInsets.all(16),
+                          child: Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  pickedQuestion.question,
+                                  style: TextStyle(fontSize: 24),
+                                ),
+                                SizedBox(height: 20),
+                                pickedQuestion.quizOptions[0],
+                                SizedBox(height: 20),
+                                pickedQuestion.quizOptions[1],
+                                SizedBox(height: 20),
+                                pickedQuestion.quizOptions[2],
+                              ],
+                            ),
+                          ),
+                        ),
+                    ),
+                  )
+              ),
+            ],
+          ),
+
+        )
     );
   }
 }
