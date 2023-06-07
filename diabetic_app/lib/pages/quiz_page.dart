@@ -29,27 +29,35 @@ class QuizPage extends StatefulWidget {
 class _QuizPageState extends State<QuizPage> {
   QuizController quizController = QuizController();
   List<QuizQuestion> questions = [];
-  bool gameStarted = false;
+  QuizQuestion pickedQuestion = QuizQuestion.empty();
 
-  int showedQuestions = 0;
+  bool gameStarted = false;
 
   @override
   void initState(){
     super.initState();
   }
 
-  //Se esperará a que se carguen las preguntas antes de cargar el arreglo con los Widgets.
-  /*Future<List<QuizQuestion>> loadQuestionsFromJSON() async {
-    quizController.readJSONFromFile(1);
-    return quizController.generateOptionWidgets(3);
-  }*/
-
   void startQuiz() async {
-     await quizController.readJSONFromFile(1);
+    await quizController.readJSONFromFile(1);
     questions = quizController.generateOptionWidgets(3);
     setState(() {
       gameStarted = true;
+      pickQuestion();
     });
+  }
+
+  void pickQuestion() {
+    try{
+      if(questions.isNotEmpty) {
+        var random = Random();
+        int selected = random.nextInt(questions.length);
+        pickedQuestion = questions[selected];
+        questions.removeAt(selected);
+      }
+    } catch(e) {
+      print('Exception on pickQuestion: $e');
+    }
   }
 
   @override
@@ -73,7 +81,7 @@ class _QuizPageState extends State<QuizPage> {
               child: Text(questions[0].question),
             ),
           ) : Container(
-            alignment: Alignment.topCenter,
+            alignment: Alignment.center,
             child: ElevatedButton(
               onPressed: startQuiz,
               child: SizedBox(
@@ -83,6 +91,58 @@ class _QuizPageState extends State<QuizPage> {
               ),
             ),
           ),
+        ],
+      ),
+    );
+  }
+
+  Widget _streetPaint(){
+    return Container(
+      width: 70,
+      height: 20,
+      color: Colors.yellow,
+    );
+  }
+
+  Widget _streetBox(){
+    return Container(
+      decoration:  const BoxDecoration(
+        color: Colors.grey,
+      ),
+      alignment: Alignment.center,
+      child: Row(
+        children: [
+          Column(
+            children: [_streetPaint()],
+          ),
+          Column(
+            children: [_streetPaint()],
+          ),
+          Column(
+            children: [_streetPaint()],
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget _quizBackgroundLayout(){
+    return SizedBox(
+      child: Column(
+        children: [
+          Row(),
+          Row(
+            children: [_streetBox()],
+          ),
+          Row(),
+          Row(
+            children: [_streetBox()],
+          ),
+          Row(),
+          Row(
+            children: [_streetPaint()],
+          ),
+          Row(),
         ],
       ),
     );

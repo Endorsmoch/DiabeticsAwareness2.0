@@ -7,6 +7,7 @@ class QuizQuestion {
 
   QuizQuestion({required this.question, required this.quizOptions});
 
+  QuizQuestion.empty() : quizOptions = [];
 
 }
 /*void main() {

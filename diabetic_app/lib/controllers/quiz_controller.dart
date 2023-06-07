@@ -36,7 +36,7 @@ class QuizController {
       //Ciclo en el que se seleccionan aleatoriamente 'n=options' preguntas y sus respectivas opciones y se preparan los widgets
       for (int i = 0; i < numQuestions; i++){
         List<QuizOptionWidget> optsWidgets = [];
-        var random = new Random();
+        var random = Random();
 
         //Lo siguiente se hace por si los archivos JSON tienen cantidad de preguntas distintas.
         int randomNum = random.nextInt(questions.length); //Se elige un valor entre 0 - el tamaño del arreglo de preguntas.
