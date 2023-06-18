@@ -10,7 +10,7 @@ class QuizQuestion {
   QuizQuestion.empty() : quizOptions = [];
 
 }
-/*void main() {
+void main() {
   QuizOptionWidget option1 = QuizOptionWidget(text: 'Option 1', isCorrect: false);
   QuizOptionWidget option2 = QuizOptionWidget(text: 'Option 2', isCorrect: true);
   QuizOptionWidget option3 = QuizOptionWidget(text: 'Option 3', isCorrect: false);
@@ -44,4 +44,4 @@ class QuizQuestion {
       ),
     ),
   ));
-}*/
+}
