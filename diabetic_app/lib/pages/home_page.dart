@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:diabetic_app/auth.dart';
 import 'package:diabetic_app/my_widgets/news_card_widget.dart';
 import 'package:diabetic_app/controllers/news_controller.dart';
+import 'package:diabetic_app/my_widgets/menu_button_widget.dart';
 
 class HomePage extends StatefulWidget{
   HomePage({Key? key}) : super(key: key);
@@ -97,6 +98,12 @@ class _HomePageState extends State<HomePage>{
     return Scaffold(
       appBar: AppBar(
         title: _title(),
+        actions: [
+          Padding(
+            padding: EdgeInsets.only(right: 10),
+            child: MenuButtonWidget(),
+          )
+        ],
       ),
       body: ListView(
         padding: const EdgeInsets.all(20),

@@ -1,4 +1,3 @@
-import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -126,25 +125,26 @@ class _LoginPageState extends State<LoginPage> {
       appBar: AppBar(
         title: _title(),
       ),
-      body: Container(
-        height: double.infinity,
-        width: double.infinity,
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            _entryField('Correo', _controllerEmail),
-            _entryField('Contraseña', _controllerPassword),
-            _errorMessage(),
-            _submitButton(),
-            _loginOrRegisterButton(),
-            const SizedBox(height: 80,),
-            _loginWithFacebookButton(),
-            _loginWithGoogleButton(),
-          ],
+      body: SingleChildScrollView(
+        child: Container(
+          height: MediaQuery.of(context).size.height,
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              _entryField('Correo', _controllerEmail),
+              _entryField('Contraseña', _controllerPassword),
+              _errorMessage(),
+              _submitButton(),
+              _loginOrRegisterButton(),
+              const SizedBox(height: 80,),
+              _loginWithFacebookButton(),
+              _loginWithGoogleButton(),
+            ],
+          ),
         ),
-      ),
+      )
     );
   }
 }
