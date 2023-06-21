@@ -1,29 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:diabetic_app/pages/login_register_page.dart';
-
-void main() {
-  runApp(MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Menu Button Widget',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text('Menu Button Widget'),
-        ),
-        body: Center(
-          child: MenuButtonWidget(),
-        ),
-      ),
-    );
-  }
-}
+import 'package:diabetic_app/pages/quiz_lobby_page.dart';
 
 class MenuButtonWidget extends StatefulWidget {
   @override
@@ -37,13 +14,31 @@ class _MenuButtonWidgetState extends State<MenuButtonWidget>{
 
   }
 
+  void quizButtonPressed(BuildContext context) {
+    Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => QuizLobbyPage())
+    );
+  }
+  //Espacio para los demás métodos de acción de los botones restantes
+
+  void loginButtonPressed(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => LoginPage())
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return PopupMenuButton(
       itemBuilder: (context) => [
-        PopupMenuItem(child: Row(children: [
-          Text('Quiz'),
-        ],),),
+        PopupMenuItem(
+          child: GestureDetector(
+            onTap: () => quizButtonPressed(context),
+            child: Text('Quiz'),
+          ),
+        ),
         PopupMenuItem(child: Row(children: [
           Text('Opción 1'),
         ],),),
@@ -52,12 +47,7 @@ class _MenuButtonWidgetState extends State<MenuButtonWidget>{
         ],),),
         PopupMenuItem(
           child: GestureDetector(
-            onTap: (){
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => LoginPage()),
-              );
-            },
+            onTap: () => loginButtonPressed(context),
             child: Text('Iniciar Sesión'),
           )
 

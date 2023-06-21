@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:diabetic_app/my_widgets/quiz_option_widget.dart';
 import 'package:diabetic_app/my_classes/quiz_question.dart';
+import 'package:diabetic_app/pages/quiz_page.dart';
 import 'package:flutter/services.dart';
 
 class QuizController {
@@ -10,6 +11,10 @@ class QuizController {
   List<String> correctOpts = [];
   List<List<String>> incorrectOpts = [];
   List<QuizQuestion> quizQuestions = [];
+
+  void notifyOptionSelected(bool isCorrect){
+
+  }
 
   Future<void> readJSONFromFile(int level) async {
     try {

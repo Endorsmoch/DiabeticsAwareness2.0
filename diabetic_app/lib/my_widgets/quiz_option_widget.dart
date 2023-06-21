@@ -1,10 +1,13 @@
+import 'dart:io';
+
+import 'package:diabetic_app/controllers/quiz_controller.dart';
 import 'package:flutter/material.dart';
 
 class QuizOptionWidget extends StatefulWidget {
   final String text;
   bool isCorrect;
   final Color baseColor = Color(0xFFE0E0E0);
-  Color changeColor = Colors.white;
+  Color changeColor;
 
   QuizOptionWidget({required this.text, required this.isCorrect})
       : changeColor = isCorrect ? Colors.lightGreenAccent :  Colors.redAccent;
@@ -45,30 +48,3 @@ class _QuizOptionWidgetState extends State<QuizOptionWidget> {
     );
   }
 }
-
-//Función de prueba.
-/*void main() {
-  runApp(MaterialApp(
-    home: Scaffold(
-      appBar: AppBar(
-        title: const Text('Prueba de QuizOptionWidget'),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            QuizOptionWidget(
-              text: 'Opción 1',
-              isCorrect: true,
-            ),
-            SizedBox(height: 20),
-            QuizOptionWidget(
-              text: 'Opción 2',
-              isCorrect: false,
-            ),
-          ],
-        ),
-      ),
-    ),
-  ));
-}*/

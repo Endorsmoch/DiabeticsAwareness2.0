@@ -1,32 +1,23 @@
 import 'dart:math';
 
 import 'package:diabetic_app/my_classes/quiz_question.dart';
-import 'package:diabetic_app/my_widgets/quiz_option_widget.dart';
+import 'package:diabetic_app/my_widgets/question_card_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:diabetic_app/controllers/quiz_controller.dart';
 
-void main() {
-  runApp(MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Quiz App',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: QuizPage(),
-    );
-  }
-}
 class QuizPage extends StatefulWidget {
+
+  int level = 0;
+
   @override
-  _QuizPageState createState() => _QuizPageState();
+  _QuizPageState createState() => _QuizPageState(level: this.level);
+
+  QuizPage({required this.level});
+
 }
 
 class _QuizPageState extends State<QuizPage> {
+  int level = 0;
   QuizController quizController = QuizController();
   List<QuizQuestion> questions = [];
   QuizQuestion pickedQuestion = QuizQuestion.empty();
@@ -34,13 +25,16 @@ class _QuizPageState extends State<QuizPage> {
   bool gameStarted = false;
   bool showCard = false;
 
+  _QuizPageState({required this.level});
+
   @override
   void initState(){
     super.initState();
+    loadQuiz(level);
   }
 
-  void startQuiz() async {
-    await quizController.readJSONFromFile(1);
+  void loadQuiz(int level) async {
+    await quizController.readJSONFromFile(level);
     questions = quizController.generateOptionWidgets(3);
     setState(() {
       gameStarted = true;
@@ -61,16 +55,19 @@ class _QuizPageState extends State<QuizPage> {
     }
   }
 
-  void presentQuestionCard(){
+  void _toggleCardVisibility() {
     setState(() {
-      showCard = true;
+      showCard = !showCard;
     });
   }
 
-  void disposeQuestionCard(){
-    setState(() {
-      showCard = false;
-    });
+  void optionSelected(bool isCorrect) {
+    _toggleCardVisibility();
+    if(isCorrect){
+      print("Opción Correcta");
+    }else{
+      print("Opción Incorrecta");
+    }
   }
 
   @override
@@ -79,138 +76,53 @@ class _QuizPageState extends State<QuizPage> {
       appBar: AppBar(
         title: const Text('¡Bienvenido al Quiz!'),
       ),
-      body: Column(
-        children: [
-          gameStarted ? Container(
-            decoration: BoxDecoration(
-              color: Colors.lightGreenAccent,
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.blueGrey,
-              ),
-              alignment: Alignment.center,
-              child: _quizBackgroundLayout(),
-            ),
-          ) : Container(
-            alignment: Alignment.center,
-            child: ElevatedButton(
-              onPressed: startQuiz,
-              child: SizedBox(
-                width: 100,
-                height: 70,
-                child: Text('Iniciar Quiz'),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _streetPaint(){
-    return Container(
-      width: 30,
-      height: 10,
-      color: Colors.yellow,
+      body: _quizBackgroundLayout(),
     );
   }
 
   Widget _streetBox(){
-    return Container(
-      decoration:  const BoxDecoration(
+    return Expanded(
+      flex: 2,
+      child: Container(
         color: Colors.grey,
-      ),
-      alignment: Alignment.center,
-      child: Row(
-        children: [
-          Column(
-            children: [_streetPaint()],
-          ),
-          Column(
-            children: [_streetPaint()],
-          ),
-          Column(
-            children: [_streetPaint()],
-          )
-        ],
       ),
     );
   }
 
   Widget _grassBox() {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.lightGreen,
+    return Expanded(
+      flex: 2,
+      child: Container(
+        color: Colors.green,
       ),
     );
   }
 
   Widget _quizBackgroundLayout(){
-    return Container(
-      height: double.infinity,
-        child: InkWell(
-          onTap: presentQuestionCard,
-          child: Stack(
+    return GestureDetector(
+      onTap: _toggleCardVisibility,
+      child: Stack(
+        children: [
+          Column(
             children: [
-              Column(
-                children: [
-                  Row(
-                    children: [_grassBox()],
-                  ),
-                  Row(
-                    children: [_streetBox()],
-                  ),
-                  Row(
-                    children: [_grassBox()],
-                  ),
-                  Row(
-                    children: [_streetBox()],
-                  ),
-                  Row(
-                    children: [_grassBox()],
-                  ),
-                  Row(
-                    children: [_streetBox()],
-                  ),
-                  Row(
-                    children: [_grassBox()],
-                  ),
-                ],
-              ),
-              Positioned.fill(
-                  child: GestureDetector(
-                    onTap: disposeQuestionCard,
-                    child: Card(
-                        elevation: 4,
-                        child: Container(
-                          padding: EdgeInsets.all(16),
-                          child: Center(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  pickedQuestion.question,
-                                  style: TextStyle(fontSize: 24),
-                                ),
-                                SizedBox(height: 20),
-                                pickedQuestion.quizOptions[0],
-                                SizedBox(height: 20),
-                                pickedQuestion.quizOptions[1],
-                                SizedBox(height: 20),
-                                pickedQuestion.quizOptions[2],
-                              ],
-                            ),
-                          ),
-                        ),
-                    ),
-                  )
-              ),
+              _grassBox(),
+              _streetBox(),
+              _grassBox(),
+              _streetBox(),
+              _grassBox(),
+              _streetBox(),
+              _grassBox()
             ],
           ),
-
-        )
+          if (showCard)
+            Center(
+              child: SizedBox(
+                height: MediaQuery.of(context).size.height * 0.45,
+                child: QuestionCardWidget(pickedQuestion),
+              ),
+            ),
+        ],
+      ),
     );
   }
 }
