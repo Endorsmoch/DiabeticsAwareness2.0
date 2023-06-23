@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:diabetic_app/my_classes/quiz_question.dart';
 import 'package:diabetic_app/my_widgets/quiz_option_widget.dart';
 import 'dart:math';
 
 class QuestionCardWidget extends StatelessWidget{
 
-  QuizQuestion quizQuestion = QuizQuestion.empty();
+  String question = '';
   List<QuizOptionWidget> answerOptions = [];
 
-  QuestionCardWidget(QuizQuestion question){
-    this.quizQuestion = question;
-    this.answerOptions = sortAnswerOptions(question.quizOptions);
+  QuestionCardWidget(String question, List<QuizOptionWidget> buttons){
+    this.question = question;
+    this.answerOptions = sortAnswerOptions(buttons);
   }
 
   List<QuizOptionWidget> sortAnswerOptions(List<QuizOptionWidget> options){
@@ -39,7 +38,7 @@ class QuestionCardWidget extends StatelessWidget{
         padding: EdgeInsets.all(16),
         child: Column(
           children: [
-            Text(quizQuestion.question,
+            Text(question,
                 style: TextStyle(fontSize: 24)
             ),
             SizedBox(height: 20),

@@ -1,16 +1,17 @@
 import 'package:diabetic_app/my_widgets/quiz_option_widget.dart';
-import 'package:flutter/material.dart';
+//import 'package:flutter/material.dart';
 
 class QuizQuestion {
   String question = '';
-  List<QuizOptionWidget> quizOptions;
+  String correctOpt = '';
+  List<String> incorrectOpts;
 
-  QuizQuestion({required this.question, required this.quizOptions});
+  QuizQuestion({required this.question, required this.correctOpt, required this.incorrectOpts});
 
-  QuizQuestion.empty() : quizOptions = [];
+  QuizQuestion.empty() : this.incorrectOpts = [];
 
 }
-void main() {
+/*void main() {
   QuizOptionWidget option1 = QuizOptionWidget(text: 'Option 1', isCorrect: false);
   QuizOptionWidget option2 = QuizOptionWidget(text: 'Option 2', isCorrect: true);
   QuizOptionWidget option3 = QuizOptionWidget(text: 'Option 3', isCorrect: false);
@@ -44,4 +45,4 @@ void main() {
       ),
     ),
   ));
-}
+}*/

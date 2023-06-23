@@ -40,21 +40,25 @@ class QuizController {
 
       //Ciclo en el que se seleccionan aleatoriamente 'n=options' preguntas y sus respectivas opciones y se preparan los widgets
       for (int i = 0; i < numQuestions; i++){
-        List<QuizOptionWidget> optsWidgets = [];
+        //List<QuizOptionWidget> optsWidgets = [];
         var random = Random();
 
         //Lo siguiente se hace por si los archivos JSON tienen cantidad de preguntas distintas.
         int randomNum = random.nextInt(questions.length); //Se elige un valor entre 0 - el tamaño del arreglo de preguntas.
 
-        optsWidgets.add(QuizOptionWidget(text: correctOpts[randomNum], isCorrect: true)); //Agregamos la opción correcta.
+        //Agregamos las opción correcta
+        //optsWidgets.add(QuizOptionWidget(text: correctOpts[randomNum], isCorrect: true));
 
         //Agregamos las opciones incorrectas
-        for(int j = 0; j < incorrectOpts[randomNum].length; j++){
+        /*for(int j = 0; j < incorrectOpts[randomNum].length; j++){
           optsWidgets.add(QuizOptionWidget(text: incorrectOpts[randomNum][j], isCorrect: false));
-        }
+        }*/
 
-        //Creamos el objeto de la pregunta con sus respectivos Widgets de opción.
-        quizQuestions.add(QuizQuestion(question: questions[randomNum], quizOptions: optsWidgets));
+        //Creamos el objeto de la pregunta con sus respectivas opciones.
+
+        //quizQuestions.add(QuizQuestion(question: questions[randomNum], quizOptions: optsWidgets));
+        quizQuestions.add(QuizQuestion(question: questions[randomNum], correctOpt: correctOpts[randomNum], incorrectOpts: incorrectOpts[randomNum]));
+
       }
 
     } catch(e) {

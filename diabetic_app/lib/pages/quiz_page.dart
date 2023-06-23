@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:diabetic_app/my_classes/quiz_question.dart';
 import 'package:diabetic_app/my_widgets/question_card_widget.dart';
+import 'package:diabetic_app/my_widgets/quiz_option_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:diabetic_app/controllers/quiz_controller.dart';
 
@@ -21,6 +22,7 @@ class _QuizPageState extends State<QuizPage> {
   QuizController quizController = QuizController();
   List<QuizQuestion> questions = [];
   QuizQuestion pickedQuestion = QuizQuestion.empty();
+  List<QuizOptionWidget> optionButtons = [];
 
   bool gameStarted = false;
   bool showCard = false;
@@ -49,10 +51,25 @@ class _QuizPageState extends State<QuizPage> {
         int selected = random.nextInt(questions.length);
         pickedQuestion = questions[selected];
         questions.removeAt(selected);
+        this.optionButtons = buildOptionButtons(pickedQuestion.correctOpt, pickedQuestion.incorrectOpts);
       }
     } catch(e) {
       print('Exception on pickQuestion: $e');
     }
+  }
+
+  List<QuizOptionWidget> buildOptionButtons(String correctOpt, List<String> incorrectOpts){
+    List<QuizOptionWidget> options = [];
+
+    //Crear botón de la opción correcta
+    options.add(QuizOptionWidget(text: correctOpt, isCorrect: true, onTapFn: () => optionSelected(true)));
+
+    //Crear botones de las opciones incorrectas
+    for(int i = 0 ;i < incorrectOpts.length; i ++){
+      options.add(QuizOptionWidget(text: incorrectOpts[i], isCorrect: false, onTapFn: () => optionSelected(false)));
+    }
+
+    return options;
   }
 
   void _toggleCardVisibility() {
@@ -62,7 +79,8 @@ class _QuizPageState extends State<QuizPage> {
   }
 
   void optionSelected(bool isCorrect) {
-    _toggleCardVisibility();
+
+    Future.delayed(Duration(milliseconds: 1500), _toggleCardVisibility);
     if(isCorrect){
       print("Opción Correcta");
     }else{
@@ -94,6 +112,22 @@ class _QuizPageState extends State<QuizPage> {
       flex: 2,
       child: Container(
         color: Colors.green,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            _iguana(0),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _iguana(int whenToAppear){
+    return SizedBox(
+      height: 50,
+      width: 50,
+      child: Image(
+        image: AssetImage("assets/images/iguana.jpg"),
       ),
     );
   }
@@ -118,7 +152,7 @@ class _QuizPageState extends State<QuizPage> {
             Center(
               child: SizedBox(
                 height: MediaQuery.of(context).size.height * 0.45,
-                child: QuestionCardWidget(pickedQuestion),
+                child: QuestionCardWidget(pickedQuestion.question, optionButtons),
               ),
             ),
         ],

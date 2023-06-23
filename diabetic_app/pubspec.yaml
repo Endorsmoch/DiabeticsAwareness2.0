@@ -84,6 +84,7 @@ flutter:
   assets:
     - assets/question_files/
     - assets/news_files/news.txt
+    - assets/images/
   # fonts:
   #   - family: Schyler
   #     fonts:

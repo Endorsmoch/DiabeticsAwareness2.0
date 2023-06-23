@@ -4,26 +4,33 @@ import 'package:diabetic_app/controllers/quiz_controller.dart';
 import 'package:flutter/material.dart';
 
 class QuizOptionWidget extends StatefulWidget {
+  //Argumentos en el constructor
   final String text;
   bool isCorrect;
+  final Function onTapFn;
+
   final Color baseColor = Color(0xFFE0E0E0);
   Color changeColor;
 
-  QuizOptionWidget({required this.text, required this.isCorrect})
+  QuizOptionWidget({required this.text, required this.isCorrect, required this.onTapFn})
       : changeColor = isCorrect ? Colors.lightGreenAccent :  Colors.redAccent;
 
   @override
-  _QuizOptionWidgetState createState() => _QuizOptionWidgetState();
+  _QuizOptionWidgetState createState() => _QuizOptionWidgetState(onTapFn: this.onTapFn);
 
 }
 
 class _QuizOptionWidgetState extends State<QuizOptionWidget> {
   bool isPressed = false;
+  final Function onTapFn;
 
-  void onTap() {
+  _QuizOptionWidgetState({required this.onTapFn});
+
+  void onTap(){
     setState(() {
-      isPressed = !isPressed;
+      isPressed = true;
     });
+    onTapFn();
   }
 
   @override
@@ -33,7 +40,7 @@ class _QuizOptionWidgetState extends State<QuizOptionWidget> {
       style: ElevatedButton.styleFrom(
         primary: isPressed ? widget.changeColor : widget.baseColor,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(15),
+          borderRadius: BorderRadius.circular(20),
         ),
       ),
       child: Container(
