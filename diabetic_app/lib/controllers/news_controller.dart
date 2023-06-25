@@ -12,7 +12,7 @@
 
     Future<void> readJSONFromFile() async {
       try{
-        final String response = await rootBundle.loadString('assets/news_files/news.txt');
+        final String response = await rootBundle.loadString('assets/news_files/news.json');
         final data = await json.decode(response);
 
         List<dynamic> newsList = data['noticias'];
@@ -33,10 +33,8 @@
 
     List<NewsCard> generateNewsWidgets() {
       try {
-        print(news.length);
         for (int i = 0; i < news.length; i++) {
-          print(news[i].title);
-            newsWidgets.add(NewsCard(newsInfo: news[i]));
+          newsWidgets.add(NewsCard(newsInfo: news[i]));
         }
       }catch (e) {
         print("Exception catch at generateNewsWidget: $e" );

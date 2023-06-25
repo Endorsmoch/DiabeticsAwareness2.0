@@ -83,7 +83,7 @@ flutter:
   # example:
   assets:
     - assets/question_files/
-    - assets/news_files/news.txt
+    - assets/news_files/
     - assets/images/
   # fonts:
   #   - family: Schyler

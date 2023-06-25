@@ -33,24 +33,37 @@ class QuestionCardWidget extends StatelessWidget{
   }
   @override
   Widget build(BuildContext context){
-    return Card(
-      child: Padding(
-        padding: EdgeInsets.all(16),
-        child: Column(
-          children: [
-            Text(question,
-                style: TextStyle(fontSize: 24)
+    return Center(
+      child: SizedBox(
+        height: MediaQuery.of(context).size.height * 0.45,
+        child: Card(
+          child: Padding(
+            padding: EdgeInsets.all(16),
+            child: Column(
+              children: [
+                Text(question,
+                  style: TextStyle(fontSize: 24),
+                  textAlign: TextAlign.center,
+                ),
+                ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: answerOptions.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return Column(
+                      children: [
+                        SizedBox(height: 20,),
+                        answerOptions[index],
+                      ],
+                    );
+                  },
+                )
+              ],
             ),
-            SizedBox(height: 20),
-            answerOptions[0],
-            SizedBox(height: 20),
-            answerOptions[1],
-            SizedBox(height: 20),
-            answerOptions[2],
-          ],
+          ),
         ),
       ),
     );
+    ;
   }
 
 }

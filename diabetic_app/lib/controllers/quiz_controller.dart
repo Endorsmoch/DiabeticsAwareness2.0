@@ -10,61 +10,70 @@ class QuizController {
   List<String> questions = [];
   List<String> correctOpts = [];
   List<List<String>> incorrectOpts = [];
-  List<QuizQuestion> quizQuestions = [];
+  List<QuizQuestion> levelQuestions = [];
+  List<QuizQuestion> levelQuestionsCopy = [];
 
-  void notifyOptionSelected(bool isCorrect){
+  int stage = 0;
 
+  void increaseStage(){
+    if(stage < 4){
+      this.stage++;
+    }
+  }
+
+  int getStage(){
+    return stage;
   }
 
   Future<void> readJSONFromFile(int level) async {
     try {
-      final String response = await rootBundle.loadString('assets/question_files/Preguntas_$level.txt');
+      final String response = await rootBundle.loadString('assets/question_files/preguntas.json');
       final data = await json.decode(response);
 
-      List<dynamic> questionsList = data['preguntas'];
-
-      for (var question in questionsList) {
+      List<dynamic> nivelesList = data['niveles'];
+      List<dynamic> questionsList = nivelesList[level-1]['preguntas'];
+      for(var question in questionsList){
         questions.add(question['texto']);
         correctOpts.add(question['respuestas']['correcta']);
         incorrectOpts.add(
             List<String>.from(question['respuestas']['incorrectas'])
         );
       }
+      buildLevelQuestionsList();
     } catch(e) {
       print('Exception catched: $e');
     }
   }
 
-  List<QuizQuestion> generateOptionWidgets(int numQuestions) {
+  void buildLevelQuestionsList(){
     try {
-
-      //Ciclo en el que se seleccionan aleatoriamente 'n=options' preguntas y sus respectivas opciones y se preparan los widgets
-      for (int i = 0; i < numQuestions; i++){
-        //List<QuizOptionWidget> optsWidgets = [];
-        var random = Random();
-
-        //Lo siguiente se hace por si los archivos JSON tienen cantidad de preguntas distintas.
-        int randomNum = random.nextInt(questions.length); //Se elige un valor entre 0 - el tamaño del arreglo de preguntas.
-
-        //Agregamos las opción correcta
-        //optsWidgets.add(QuizOptionWidget(text: correctOpts[randomNum], isCorrect: true));
-
-        //Agregamos las opciones incorrectas
-        /*for(int j = 0; j < incorrectOpts[randomNum].length; j++){
-          optsWidgets.add(QuizOptionWidget(text: incorrectOpts[randomNum][j], isCorrect: false));
-        }*/
-
-        //Creamos el objeto de la pregunta con sus respectivas opciones.
-
-        //quizQuestions.add(QuizQuestion(question: questions[randomNum], quizOptions: optsWidgets));
-        quizQuestions.add(QuizQuestion(question: questions[randomNum], correctOpt: correctOpts[randomNum], incorrectOpts: incorrectOpts[randomNum]));
-
+      for(int i = 0; i < questions.length; i++){
+        levelQuestions.add(QuizQuestion(question: questions[i], correctOpt: correctOpts[i], incorrectOpts: incorrectOpts[i]));
       }
-
-    } catch(e) {
-      print('Exception catched in GenerateOption: $e');
+      levelQuestionsCopy = levelQuestions;
+    }catch (e){
+      print("Exception in builLevelQuestionsList(): $e");
     }
-    return quizQuestions;
+  }
+
+  QuizQuestion selectQuizQuestion() {
+    QuizQuestion deliverableQuestion = QuizQuestion.empty();
+
+    try {
+      if(levelQuestionsCopy.isNotEmpty){
+        var random = Random();
+        int randomNum = random.nextInt(levelQuestionsCopy.length);
+        deliverableQuestion = levelQuestionsCopy[randomNum];
+        levelQuestionsCopy.removeAt(randomNum);
+      }
+    } catch(e) {
+      print('Exception in selectQuizQuestion: $e');
+    }
+    return deliverableQuestion;
+  }
+
+  void returnQuestion(QuizQuestion returnedQuestion){
+    this.levelQuestionsCopy.add(returnedQuestion);
   }
 
 
