@@ -26,9 +26,10 @@ class _QuizPageState extends State<QuizPage> {
 
   int currentStage = 0;
 
-
   bool gameStarted = false;
   bool showCard = false;
+  bool correctSelected = false;
+  bool incorrectSelected = false;
 
   _QuizPageState({required this.level});
 
@@ -82,15 +83,28 @@ class _QuizPageState extends State<QuizPage> {
       _toggleCardVisibility();
       if(isCorrect){
         //Ejecución de la opción correcta
+        Future.delayed(Duration(milliseconds: 2000),(){
+          setState(() {
+            correctSelected = true;
+          });
+        });
+
         setState(() {
+          correctSelected = false;
           quizController.increaseStage();
           currentStage = quizController.getStage();
         });
         pickQuestion();
-
-
       }else{
         //Ejecución de la opción incorrecta
+        Future.delayed(Duration(milliseconds: 2000),(){
+          setState(() {
+            incorrectSelected = true;
+          });
+        });
+        setState(() {
+          incorrectSelected = false;
+        });
         quizController.returnQuestion(pickedQuestion);
         pickQuestion();
       }
@@ -148,6 +162,14 @@ class _QuizPageState extends State<QuizPage> {
     return object;
   }
 
+  Widget _correctGIF(){
+    return const Image(image: AssetImage("assets/images/correcto.gif"));
+  }
+
+  Widget _incorrectGIF(){
+    return const Image(image: AssetImage("assets/images/incorrecto.gif"));
+  }
+
   Widget _quizBackgroundLayout(){
     return GestureDetector(
       onTap: _toggleCardVisibility,
@@ -164,10 +186,14 @@ class _QuizPageState extends State<QuizPage> {
               _grassBox(0)
             ],
           ),
-          if (showCard && quizController.stage < 3)
+          if(showCard && quizController.stage < 3)
             QuestionCardWidget(pickedQuestion.question, optionButtons),
           if(currentStage >= 3)
             CongratsCardWidget(level: this.level),
+          if(correctSelected)
+            _correctGIF(),
+          if(incorrectSelected)
+            _incorrectGIF(),
         ],
       ),
     );
