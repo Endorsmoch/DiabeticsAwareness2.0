@@ -83,30 +83,29 @@ class _QuizPageState extends State<QuizPage> {
       _toggleCardVisibility();
       if(isCorrect){
         //Ejecución de la opción correcta
+        setState(() {
+          correctSelected = true;
+        });
         Future.delayed(Duration(milliseconds: 2000),(){
           setState(() {
-            correctSelected = true;
+            correctSelected = false;
+            quizController.increaseStage();
+            currentStage = quizController.getStage();
           });
+          pickQuestion();
         });
-
-        setState(() {
-          correctSelected = false;
-          quizController.increaseStage();
-          currentStage = quizController.getStage();
-        });
-        pickQuestion();
       }else{
         //Ejecución de la opción incorrecta
+        setState(() {
+          incorrectSelected = true;
+        });
         Future.delayed(Duration(milliseconds: 2000),(){
           setState(() {
-            incorrectSelected = true;
+            incorrectSelected = false;
           });
+          quizController.returnQuestion(pickedQuestion);
+          pickQuestion();
         });
-        setState(() {
-          incorrectSelected = false;
-        });
-        quizController.returnQuestion(pickedQuestion);
-        pickQuestion();
       }
     });
   }
@@ -163,11 +162,11 @@ class _QuizPageState extends State<QuizPage> {
   }
 
   Widget _correctGIF(){
-    return const Image(image: AssetImage("assets/images/correcto.gif"));
+    return const Center(child: Image(image: AssetImage("assets/images/correcto.gif")));
   }
 
   Widget _incorrectGIF(){
-    return const Image(image: AssetImage("assets/images/incorrecto.gif"));
+    return const Center(child: Image(image: AssetImage("assets/images/incorrecto.gif")),);
   }
 
   Widget _quizBackgroundLayout(){
