@@ -1,8 +1,12 @@
 import 'package:diabetic_app/pages/quiz_lobby_page.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+
+import '../my_classes/auth.dart';
 
 class CongratsCardWidget extends StatelessWidget{
 
+  final User? user = Auth().currentUser;
   int level = 0;
 
   CongratsCardWidget({required this.level});
@@ -21,6 +25,15 @@ class CongratsCardWidget extends StatelessWidget{
     );
   }
 
+  Widget _facebookButton(context) {
+    return ElevatedButton(
+      onPressed: () => shareWithFacebook(this.level, context),
+      child: Text(
+          'Compartir en Facebook'
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context){
     return Center(
@@ -36,12 +49,7 @@ class CongratsCardWidget extends StatelessWidget{
                   textAlign: TextAlign.center,
                 ),
                 SizedBox(height: 40,),
-                ElevatedButton(
-                  onPressed: () => shareWithFacebook(this.level, context),
-                  child: Text(
-                      'Compartir en Facebook'
-                  ),
-                ),
+                user != null? _facebookButton(context) : SizedBox(),
                 GestureDetector(
                   onTap: () => goBackToQuizMenu(context),
                   child: Text("Regresar al menú"),

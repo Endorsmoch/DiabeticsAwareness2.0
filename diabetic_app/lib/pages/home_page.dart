@@ -1,7 +1,7 @@
 import 'package:diabetic_app/my_classes/news.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:diabetic_app/auth.dart';
+import 'package:diabetic_app/my_classes/auth.dart';
 import 'package:diabetic_app/my_widgets/news_card_widget.dart';
 import 'package:diabetic_app/controllers/news_controller.dart';
 import 'package:diabetic_app/my_widgets/menu_button_widget.dart';
@@ -24,7 +24,10 @@ class _HomePageState extends State<HomePage>{
   }
 
   Widget _title() {
-    return const Text('Diabetic App'); //DEBE MODIFICARSE CUANDO SE TENGA UN NOMBRE MÁS ADECUADO
+    return const Text('Diabetic App',
+      style: TextStyle(
+      fontSize: 26
+    ) ,); //DEBE MODIFICARSE CUANDO SE TENGA UN NOMBRE MÁS ADECUADO
   }
 
   Widget _userUid() {
@@ -62,37 +65,6 @@ class _HomePageState extends State<HomePage>{
     });
   }
 
-  /*@override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: _title(),
-      ),
-      body: SingleChildScrollView(
-        child: Container(
-          height: MediaQuery.of(context).size.height,
-          width: MediaQuery.of(context).size.width,
-          padding: const EdgeInsets.all(20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Expanded(
-                child: ListView(
-                  children:[
-                    Text('¿Sabías qué?'),
-                    SizedBox(height: 20),
-
-                    ..._buildNewsList(),
-                  ]
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }*/
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -111,7 +83,7 @@ class _HomePageState extends State<HomePage>{
           Text(
             '¿Sabías qué?',
             style: TextStyle(
-              fontSize: 24,
+              fontSize: 26,
             ),
           ),
           SizedBox(height: 20),

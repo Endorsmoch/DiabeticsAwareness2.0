@@ -1,3 +1,4 @@
+import 'package:diabetic_app/pages/home_page.dart';
 import 'package:diabetic_app/pages/quiz_page.dart';
 import 'package:flutter/material.dart';
 
@@ -24,6 +25,12 @@ void startQuiz(BuildContext context, String level) {
         MaterialPageRoute(builder: (context) => QuizPage(level: 3))
     );
   }
+}
+void returnToMenu(BuildContext context) {
+  Navigator.push(
+    context,
+    MaterialPageRoute(builder: (context) => HomePage())
+  );
 }
 
 ElevatedButton quizLevelButton(BuildContext context, String nivel) {
@@ -60,23 +67,30 @@ ElevatedButton quizLevelButton(BuildContext context, String nivel) {
     ),
   );
 }
-
+Widget _title(String title){
+  return Text(
+    title,
+    style: TextStyle(
+      fontSize: 24
+    ),
+  );
+}
 class _QuizLobbyPageState extends State<QuizLobbyPage> {
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Quiz'),
+        title: _title('Quiz'),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () => returnToMenu(context),
+        ),
       ),
       body: ListView(
         padding: const EdgeInsets.all(30),
         children: [
-          Text('Selecciona un nivel:',
-            style: TextStyle(
-                fontSize: 24
-            ),
-          ),
+          _title('Selecciona un nivel:'),
           SizedBox(height: 80,),
           Container(
             alignment: Alignment.center,

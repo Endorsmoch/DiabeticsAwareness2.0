@@ -1,8 +1,9 @@
 
 import 'package:diabetic_app/controllers/login_controller.dart';
+import 'package:diabetic_app/pages/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import '../auth.dart';
+import '../my_classes/auth.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -29,7 +30,10 @@ class _LoginPageState extends State<LoginPage> {
           email: _controllerEmail.text,
           password: _controllerPassword.text,
       );
-
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => HomePage())
+      );
     } on FirebaseAuthException catch (e) {
       if(loginController.userNotFound(e.message)){
         setState(() {
@@ -58,6 +62,7 @@ class _LoginPageState extends State<LoginPage> {
         email: _controllerEmail.text,
         password: _controllerPassword.text,
       );
+      isLogin = !isLogin;
     } on FirebaseAuthException catch (e) {
       if(loginController.emptyFields(e.message)){
         setState(() {
@@ -95,7 +100,11 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Widget _title() {
-    return const Text('Diabetic App');
+    return const Text('Diabetic App',
+      style: TextStyle(
+        fontSize: 26
+      )
+      ,);
   }
 
   Widget _entryField(String title, TextEditingController controller) {

@@ -1,6 +1,9 @@
+import 'package:diabetic_app/pages/config_page.dart';
 import 'package:flutter/material.dart';
 import 'package:diabetic_app/pages/login_register_page.dart';
 import 'package:diabetic_app/pages/quiz_lobby_page.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import '../my_classes/auth.dart';
 
 class MenuButtonWidget extends StatefulWidget {
   @override
@@ -9,9 +12,23 @@ class MenuButtonWidget extends StatefulWidget {
 }
 
 class _MenuButtonWidgetState extends State<MenuButtonWidget>{
-
+  final User? user = Auth().currentUser;
   void onPressed() {
 
+  }
+
+  Widget menuLoginButton(BuildContext context){
+    return GestureDetector(
+      onTap: () => loginButtonPressed(context),
+      child: Text('Iniciar Sesión'),
+    );
+  }
+
+  Widget menuProfileButton(BuildContext context) {
+    return GestureDetector(
+      onTap: () => configButtonPressed(context),
+      child: Text('Configuración'),
+    );
   }
 
   void quizButtonPressed(BuildContext context) {
@@ -26,6 +43,13 @@ class _MenuButtonWidgetState extends State<MenuButtonWidget>{
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => LoginPage())
+    );
+  }
+
+  void configButtonPressed(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => ConfigPage())
     );
   }
 
@@ -46,11 +70,7 @@ class _MenuButtonWidgetState extends State<MenuButtonWidget>{
           Text('Opción 2'),
         ],),),
         PopupMenuItem(
-          child: GestureDetector(
-            onTap: () => loginButtonPressed(context),
-            child: Text('Iniciar Sesión'),
-          )
-
+          child: user != null? menuProfileButton(context) : menuLoginButton(context),
         ),
       ],
       child: Icon(Icons.menu, size: 36,),
