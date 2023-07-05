@@ -1,47 +1,47 @@
 import 'dart:math';
 
 import 'package:diabetic_app/my_classes/quiz_question.dart';
+import 'package:diabetic_app/my_widgets/question_card_widget.dart';
 import 'package:diabetic_app/my_widgets/quiz_option_widget.dart';
+import 'package:diabetic_app/my_widgets/congrats_card_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:diabetic_app/controllers/quiz_controller.dart';
 
-void main() {
-  runApp(MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Quiz App',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: QuizPage(),
-    );
-  }
-}
 class QuizPage extends StatefulWidget {
+
+  int level = 0;
+
   @override
-  _QuizPageState createState() => _QuizPageState();
+  _QuizPageState createState() => _QuizPageState(level: this.level);
+
+  QuizPage({required this.level});
+
 }
 
 class _QuizPageState extends State<QuizPage> {
+  int level = 0;
   QuizController quizController = QuizController();
-  List<QuizQuestion> questions = [];
   QuizQuestion pickedQuestion = QuizQuestion.empty();
+  List<QuizOptionWidget> optionButtons = [];
+
+  int currentStage = 0;
 
   bool gameStarted = false;
   bool showCard = false;
+  bool correctSelected = false;
+  bool incorrectSelected = false;
+
+  _QuizPageState({required this.level});
 
   @override
   void initState(){
     super.initState();
+    loadQuiz(level);
   }
 
-  void startQuiz() async {
-    await quizController.readJSONFromFile(1);
-    questions = quizController.generateOptionWidgets(3);
+  void loadQuiz(int level) async {
+    await quizController.readJSONFromFile(level);
+    //questions = quizController.selectQuizQuestions(3);
     setState(() {
       gameStarted = true;
       pickQuestion();
@@ -50,28 +50,66 @@ class _QuizPageState extends State<QuizPage> {
 
   void pickQuestion() {
     try{
-      if(questions.isNotEmpty) {
-        var random = Random();
-        int selected = random.nextInt(questions.length);
-        pickedQuestion = questions[selected];
-        questions.removeAt(selected);
-      }
+      pickedQuestion = quizController.selectQuizQuestion();
+      this.optionButtons = buildOptionButtons(pickedQuestion.correctOpt, pickedQuestion.incorrectOpts);
     } catch(e) {
       print('Exception on pickQuestion: $e');
     }
   }
 
-  void presentQuestionCard(){
+  List<QuizOptionWidget> buildOptionButtons(String correctOpt, List<String> incorrectOpts){
+    List<QuizOptionWidget> options = [];
+
+    //Crear botón de la opción correcta
+    options.add(QuizOptionWidget(text: correctOpt, isCorrect: true, onTapFn: () => optionSelected(true)));
+
+    //Crear botones de las opciones incorrectas
+    for(int i = 0 ;i < incorrectOpts.length; i ++){
+      options.add(QuizOptionWidget(text: incorrectOpts[i], isCorrect: false, onTapFn: () => optionSelected(false)));
+    }
+
+    return options;
+  }
+
+  void _toggleCardVisibility() {
     setState(() {
-      showCard = true;
+      showCard = !showCard;
     });
   }
 
-  void disposeQuestionCard(){
-    setState(() {
-      showCard = false;
+  void optionSelected(bool isCorrect) {
+
+    Future.delayed(Duration(milliseconds: 600), (){
+      _toggleCardVisibility();
+      if(isCorrect){
+        //Ejecución de la opción correcta
+        setState(() {
+          correctSelected = true;
+        });
+        Future.delayed(Duration(milliseconds: 2000),(){
+          setState(() {
+            correctSelected = false;
+            quizController.increaseStage();
+            currentStage = quizController.getStage();
+          });
+          pickQuestion();
+        });
+      }else{
+        //Ejecución de la opción incorrecta
+        setState(() {
+          incorrectSelected = true;
+        });
+        Future.delayed(Duration(milliseconds: 2000),(){
+          setState(() {
+            incorrectSelected = false;
+          });
+          quizController.returnQuestion(pickedQuestion);
+          pickQuestion();
+        });
+      }
     });
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -79,138 +117,84 @@ class _QuizPageState extends State<QuizPage> {
       appBar: AppBar(
         title: const Text('¡Bienvenido al Quiz!'),
       ),
-      body: Column(
-        children: [
-          gameStarted ? Container(
-            decoration: BoxDecoration(
-              color: Colors.lightGreenAccent,
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.blueGrey,
-              ),
-              alignment: Alignment.center,
-              child: _quizBackgroundLayout(),
-            ),
-          ) : Container(
-            alignment: Alignment.center,
-            child: ElevatedButton(
-              onPressed: startQuiz,
-              child: SizedBox(
-                width: 100,
-                height: 70,
-                child: Text('Iniciar Quiz'),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _streetPaint(){
-    return Container(
-      width: 30,
-      height: 10,
-      color: Colors.yellow,
+      body: _quizBackgroundLayout(),
     );
   }
 
   Widget _streetBox(){
-    return Container(
-      decoration:  const BoxDecoration(
+    return Expanded(
+      flex: 2,
+      child: Container(
         color: Colors.grey,
-      ),
-      alignment: Alignment.center,
-      child: Row(
-        children: [
-          Column(
-            children: [_streetPaint()],
-          ),
-          Column(
-            children: [_streetPaint()],
-          ),
-          Column(
-            children: [_streetPaint()],
-          )
-        ],
       ),
     );
   }
 
-  Widget _grassBox() {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.lightGreen,
+  Widget _grassBox(int whenToAppear) {
+    return Expanded(
+      flex: 2,
+      child: Container(
+        color: Colors.green,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            _iguana(whenToAppear),
+          ],
+        ),
       ),
     );
+  }
+
+  Widget _iguana(int whenToAppear){
+    Widget object;
+    if(whenToAppear == quizController.stage){
+      object = SizedBox(
+        height: 50,
+        width: 50,
+        child: Image(
+          image: AssetImage("assets/images/iguana.jpg"),
+        ),
+      );
+    }else{
+      object = SizedBox();
+    }
+    return object;
+  }
+
+  Widget _correctGIF(){
+    return const Center(child: Image(image: AssetImage("assets/images/correcto.gif")));
+  }
+
+  Widget _incorrectGIF(){
+    return const Center(child: Image(image: AssetImage("assets/images/incorrecto.gif")),);
   }
 
   Widget _quizBackgroundLayout(){
-    return Container(
-      height: double.infinity,
-        child: InkWell(
-          onTap: presentQuestionCard,
-          child: Stack(
+    return GestureDetector(
+      onTap: _toggleCardVisibility,
+      child: Stack(
+        children: [
+          Column(
             children: [
-              Column(
-                children: [
-                  Row(
-                    children: [_grassBox()],
-                  ),
-                  Row(
-                    children: [_streetBox()],
-                  ),
-                  Row(
-                    children: [_grassBox()],
-                  ),
-                  Row(
-                    children: [_streetBox()],
-                  ),
-                  Row(
-                    children: [_grassBox()],
-                  ),
-                  Row(
-                    children: [_streetBox()],
-                  ),
-                  Row(
-                    children: [_grassBox()],
-                  ),
-                ],
-              ),
-              Positioned.fill(
-                  child: GestureDetector(
-                    onTap: disposeQuestionCard,
-                    child: Card(
-                        elevation: 4,
-                        child: Container(
-                          padding: EdgeInsets.all(16),
-                          child: Center(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  pickedQuestion.question,
-                                  style: TextStyle(fontSize: 24),
-                                ),
-                                SizedBox(height: 20),
-                                pickedQuestion.quizOptions[0],
-                                SizedBox(height: 20),
-                                pickedQuestion.quizOptions[1],
-                                SizedBox(height: 20),
-                                pickedQuestion.quizOptions[2],
-                              ],
-                            ),
-                          ),
-                        ),
-                    ),
-                  )
-              ),
+              _grassBox(3),
+              _streetBox(),
+              _grassBox(2),
+              _streetBox(),
+              _grassBox(1),
+              _streetBox(),
+              _grassBox(0)
             ],
           ),
-
-        )
+          if(showCard && quizController.stage < 3)
+            QuestionCardWidget(pickedQuestion.question, optionButtons),
+          if(currentStage >= 3)
+            CongratsCardWidget(level: this.level),
+          if(correctSelected)
+            _correctGIF(),
+          if(incorrectSelected)
+            _incorrectGIF(),
+        ],
+      ),
     );
   }
 }

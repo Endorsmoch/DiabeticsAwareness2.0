@@ -1,4 +1,4 @@
-import 'package:diabetic_app/auth.dart';
+import 'package:diabetic_app/my_classes/auth.dart';
 import 'package:diabetic_app/pages/home_page.dart';
 import 'package:diabetic_app/pages/login_register_page.dart';
 import 'package:diabetic_app/pages/welcome_page.dart';
@@ -19,11 +19,12 @@ class _WidgetTreeState extends State<WidgetTree> {
    return StreamBuilder(
        stream: Auth().authStateChanges,
        builder: (context, snapshot) {
-         if(snapshot.hasData) {
+         return HomePage();
+         /*if(snapshot.hasData) {
            return HomePage();
          } else {
-           return const WelcomePage();
-         }
+           return HomePage();
+         }*/
        },
    );
   }
