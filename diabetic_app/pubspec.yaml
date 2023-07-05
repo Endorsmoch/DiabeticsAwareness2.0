@@ -40,6 +40,7 @@ dependencies:
   flutter_facebook_auth: ^5.0.8
   google_sign_in: ^6.0.2
   url_launcher: ^6.0.9
+  share_plus: ^7.0.2
 
 
 dev_dependencies:
