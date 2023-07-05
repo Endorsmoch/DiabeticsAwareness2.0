@@ -1,6 +1,7 @@
 import 'package:diabetic_app/pages/quiz_lobby_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:share_plus/share_plus.dart';
 
 import '../my_classes/auth.dart';
 
@@ -11,11 +12,9 @@ class CongratsCardWidget extends StatelessWidget{
 
   CongratsCardWidget({required this.level});
 
-  void shareWithFacebook(int level, BuildContext context){
-    Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => QuizLobbyPage())
-    );
+  Future shareWithFacebook(int level) async {
+    final text = '¡He completado con éxito el nivel $level del Quiz de DiabeticAwareness!.';
+    await Share.share(text);
   }
 
   void goBackToQuizMenu(BuildContext context){
@@ -25,9 +24,9 @@ class CongratsCardWidget extends StatelessWidget{
     );
   }
 
-  Widget _facebookButton(context) {
+  Widget _facebookButton() {
     return ElevatedButton(
-      onPressed: () => shareWithFacebook(this.level, context),
+      onPressed: () => shareWithFacebook(this.level),
       child: Text(
           'Compartir en Facebook'
       ),
@@ -49,7 +48,7 @@ class CongratsCardWidget extends StatelessWidget{
                   textAlign: TextAlign.center,
                 ),
                 SizedBox(height: 40,),
-                user != null? _facebookButton(context) : SizedBox(),
+                user != null? _facebookButton() : SizedBox(),
                 GestureDetector(
                   onTap: () => goBackToQuizMenu(context),
                   child: Text("Regresar al menú"),
