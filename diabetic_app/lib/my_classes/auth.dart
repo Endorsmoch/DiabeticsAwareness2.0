@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -48,6 +50,34 @@ class Auth {
     );
 
     return await _firebaseAuth.signInWithCredential(credential);
+  }
+
+}
+
+class UserModel {
+  final String? id;
+  final String names = '';
+  final String lastNameF = '';
+  final String lastNameM = '';
+  final String email;
+  final String phoneNo = '';
+  final DateTime birthday = DateTime.now();
+  final String gender = '';
+  final String postalCode = '';
+
+  UserModel({required this.id, required this.email});
+
+  toJson() {
+    return {
+      "names": names,
+      "lastNameF": lastNameF,
+      "lastNameM": lastNameM,
+      "email": email,
+      "phoneNo": phoneNo,
+      "birthday": birthday,
+      "gender": gender,
+      "postalCode": postalCode
+    };
   }
 
 }

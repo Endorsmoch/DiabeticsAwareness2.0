@@ -42,7 +42,7 @@ dependencies:
   url_launcher: ^6.0.9
   share_plus: ^7.0.2
   firebase_messaging: ^14.6.4
-  firebase_storage: ^11.2.4
+  cloud_firestore: ^4.8.2
 
 
 dev_dependencies:

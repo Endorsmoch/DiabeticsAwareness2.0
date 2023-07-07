@@ -1,5 +1,4 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:diabetic_app/my_classes/auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -10,7 +9,6 @@ Future<void> handleBackgroundMessage(RemoteMessage message) async {
 }
 
 class Notifications {
-  final FirebaseStorage firebaseStorage = FirebaseStorage.instance;
   final User? user = Auth().currentUser;
   final firebaseMessaging = FirebaseMessaging.instance;
 
