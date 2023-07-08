@@ -18,6 +18,7 @@ class _HomePageState extends State<HomePage>{
   final User? user = Auth().currentUser;
   List<NewsCard> news = [];
   NewsController newsController = NewsController();
+  bool noticeVisible = true;
 
   Future<void> signOut() async {
     await Auth().signOut();
@@ -28,17 +29,6 @@ class _HomePageState extends State<HomePage>{
       style: TextStyle(
       fontSize: 26
     ) ,); //DEBE MODIFICARSE CUANDO SE TENGA UN NOMBRE MÁS ADECUADO
-  }
-
-  Widget _userUid() {
-    return Text(user?.email ?? 'Correo de Usuario');
-  }
-
-  Widget _signOutButton() {
-    return ElevatedButton(
-        onPressed: signOut,
-        child: const Text('Cerrar Sesión'),
-    );
   }
 
   List<Widget> _buildNewsList() {
@@ -65,6 +55,44 @@ class _HomePageState extends State<HomePage>{
     });
   }
 
+  void _closeNoticeWidget() {
+    setState(() {
+      noticeVisible = false;
+    });
+  }
+
+  Widget _noticeWidget() {
+    bool logedIn = (user != null);
+    return Center(
+            child: Card(
+              color: Colors.white54,
+              child: Padding(
+                padding: EdgeInsets.all(15),
+                child: Column(
+                  children: [
+                    Text(
+                      logedIn ? '¡Bienvenido de vuelta!' : 'No ha iniciado sesión o su sesión ha expirado.',
+                      style: TextStyle(
+                        fontSize: 20
+                      ),
+                    ),
+                    TextButton(
+                        onPressed: _closeNoticeWidget,
+                        child: Text(
+                          'Cerrar',
+                          style: TextStyle(
+                              fontSize: 20,
+                              color: Colors.grey
+                          ),
+                        ),
+                    )
+                  ],
+                ),
+              ),
+            ),
+          );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -86,6 +114,8 @@ class _HomePageState extends State<HomePage>{
               fontSize: 26,
             ),
           ),
+          if(noticeVisible)
+            _noticeWidget(),
           SizedBox(height: 20),
           // Add the newsWidgets using addAll
           ..._buildNewsList(),

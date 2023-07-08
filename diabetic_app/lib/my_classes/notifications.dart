@@ -23,7 +23,7 @@ class Notifications {
       sound: true
     );
     final fCMToken = await firebaseMessaging.getToken();
-    print('Token: $fCMToken');
+    //print('Token: $fCMToken');
     FirebaseMessaging.onBackgroundMessage(handleBackgroundMessage);
   }
 

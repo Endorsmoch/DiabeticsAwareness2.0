@@ -11,10 +11,6 @@ class UserRepository {
     .catchError((error) => print("Error al agregar al usuario: $error"));
   }
 
-  /*Future<void> updateUser(UserModel user) async {
-    await _firestore.collection("users").doc().update();
-  }*/
-
   Future<UserModel> getUser(User? user) async {
     if(user != null){
       QuerySnapshot querySnapshot = await _firestore.collection("users")
