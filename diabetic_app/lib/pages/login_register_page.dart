@@ -62,7 +62,9 @@ class _LoginPageState extends State<LoginPage> {
         email: _controllerEmail.text,
         password: _controllerPassword.text,
       );
-      isLogin = !isLogin;
+      setState(() {
+        isLogin = !isLogin;
+      });
     } on FirebaseAuthException catch (e) {
       if(loginController.emptyFields(e.message)){
         setState(() {
@@ -87,6 +89,10 @@ class _LoginPageState extends State<LoginPage> {
   Future<void> signInWithFacebook() async {
     try {
       await Auth().signInWithFacebook();
+      Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => HomePage())
+      );
     } on FirebaseAuthException catch (e,s) {
       print('Error $e, Stacktrace:$s');
     }
