@@ -1,6 +1,9 @@
+import 'package:diabetic_app/controllers/quiz_controller.dart';
 import 'package:diabetic_app/pages/home_page.dart';
 import 'package:diabetic_app/pages/quiz_page.dart';
 import 'package:flutter/material.dart';
+
+import '../my_classes/progress.dart';
 
 class QuizLobbyPage extends StatefulWidget {
   @override
@@ -8,13 +11,13 @@ class QuizLobbyPage extends StatefulWidget {
 
 }
 
-void startQuiz(BuildContext context, String level) {
-  if(level == '1'){
+void startQuiz(BuildContext context, int level) {
+  if(level == 1){
     Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => QuizPage(level: 1))
     );
-  } else if(level == '2'){
+  } else if(level == 2){
     Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => QuizPage(level: 2))
@@ -33,15 +36,16 @@ void returnToMenu(BuildContext context) {
   );
 }
 
-ElevatedButton quizLevelButton(BuildContext context, String nivel) {
-
-  Color getButtonColor(Set<MaterialState> states) {
-    if (states.contains(MaterialState.pressed)) {
-      // Estado presionado
-      return Colors.red; // Color rojo
-    } else if (states.contains(MaterialState.disabled)) {
-      // Estado deshabilitado
-      return Colors.grey; // Color gris
+ElevatedButton quizLevelButton(BuildContext context, int nivel) {
+  QuizController quizController = QuizController.getInstance();
+  Progress myProgress = quizController.quizProgress;
+  Color getButtonColor() {
+    if (myProgress.maxLevel >= nivel && myProgress.healthyLevels >= nivel) {
+      // Estado completado
+      return Colors.greenAccent; // Color rojo
+    } else if (myProgress.healthyLevels < nivel && myProgress.healthyLevels != myProgress.maxLevel) {
+      // Estado desatendido
+      return Colors.green; // Color gris
     }
     // Estado normal
     return Colors.grey; // Color verde
@@ -62,8 +66,7 @@ ElevatedButton quizLevelButton(BuildContext context, String nivel) {
         ),
       ),
     style: ButtonStyle(
-      //backgroundColor: MaterialStateProperty.all<Color>(Colors.green),
-      backgroundColor:  MaterialStateProperty.resolveWith<Color>(getButtonColor),
+      backgroundColor:  MaterialStateProperty.all<Color>(getButtonColor()),
     ),
   );
 }
@@ -99,11 +102,11 @@ class _QuizLobbyPageState extends State<QuizLobbyPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  quizLevelButton(context, '1'),
+                  quizLevelButton(context, 1),
                   SizedBox(height: 30,),
-                  quizLevelButton(context, '2'),
+                  quizLevelButton(context, 2),
                   SizedBox(height: 30,),
-                  quizLevelButton(context, '3'),
+                  quizLevelButton(context, 3),
                 ],
               ),
             )

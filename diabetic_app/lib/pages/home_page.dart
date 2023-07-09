@@ -1,10 +1,10 @@
-import 'package:diabetic_app/my_classes/news.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:diabetic_app/my_classes/auth.dart';
 import 'package:diabetic_app/my_widgets/news_card_widget.dart';
 import 'package:diabetic_app/controllers/news_controller.dart';
 import 'package:diabetic_app/my_widgets/menu_button_widget.dart';
+import 'package:diabetic_app/controllers/quiz_controller.dart';
 
 class HomePage extends StatefulWidget{
   HomePage({Key? key}) : super(key: key);
@@ -18,6 +18,7 @@ class _HomePageState extends State<HomePage>{
   final User? user = Auth().currentUser;
   List<NewsCard> news = [];
   NewsController newsController = NewsController();
+  QuizController quizController = QuizController.getInstance();
   bool noticeVisible = true;
 
   Future<void> signOut() async {
@@ -46,6 +47,12 @@ class _HomePageState extends State<HomePage>{
     void initState() {
     super.initState();
     loadNews();
+    loadProgress();
+    //updateLoginRegistry();
+  }
+
+  Future<void> loadProgress() async {
+    await quizController.readProgressJSONFile();
   }
 
   Future<void> loadNews() async {
@@ -53,6 +60,10 @@ class _HomePageState extends State<HomePage>{
     setState(() {
       news = newsController.generateNewsWidgets();
     });
+  }
+
+  Future<void> updateLoginRegistry() async {
+    await quizController.updateProgressJSONFile();
   }
 
   void _closeNoticeWidget() {
