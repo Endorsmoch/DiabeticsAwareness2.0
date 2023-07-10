@@ -1,3 +1,4 @@
+import 'package:diabetic_app/controllers/quiz_controller.dart';
 import 'package:diabetic_app/pages/quiz_lobby_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +9,7 @@ import '../my_classes/auth.dart';
 class CongratsCardWidget extends StatelessWidget{
 
   final User? user = Auth().currentUser;
+  QuizController quizController = QuizController.getInstance();
   int level = 0;
 
   CongratsCardWidget({required this.level});
@@ -15,9 +17,23 @@ class CongratsCardWidget extends StatelessWidget{
   Future shareWithFacebook(int level) async {
     final text = '¡He completado con éxito el nivel $level del Quiz de DiabeticAwareness!.';
     await Share.share(text);
+    updateProgress();
   }
 
+  void updateProgress() {
+    if((quizController.quizProgress.getMaxLevel() == quizController.quizProgress.getHealthyLevels()
+    && quizController.quizProgress.getMaxLevel() > this.level)
+    || quizController.quizProgress.getMaxLevel() == 0){
+      quizController.quizProgress.increaseMaxLevel();
+      quizController.quizProgress.increaseHealthyLevels();
+    } else if (quizController.quizProgress.getMaxLevel() > quizController.quizProgress.getHealthyLevels()){
+      quizController.quizProgress.increaseHealthyLevels();
+    }
+    quizController.updateProgressJSONFile();
+    quizController.resetQuiz();
+  }
   void goBackToQuizMenu(BuildContext context){
+    updateProgress();
     Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => QuizLobbyPage())

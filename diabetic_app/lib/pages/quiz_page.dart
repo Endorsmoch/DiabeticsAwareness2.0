@@ -20,7 +20,7 @@ class QuizPage extends StatefulWidget {
 
 class _QuizPageState extends State<QuizPage> {
   int level = 0;
-  QuizController quizController = QuizController();
+  QuizController quizController = QuizController.getInstance();
   QuizQuestion pickedQuestion = QuizQuestion.empty();
   List<QuizOptionWidget> optionButtons = [];
 
