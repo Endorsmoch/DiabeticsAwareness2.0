@@ -102,11 +102,11 @@ class _QuizLobbyPageState extends State<QuizLobbyPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  quizLevelButton(context, 1),
+                  quizLevelButton(context, 3),
                   SizedBox(height: 30,),
                   quizLevelButton(context, 2),
                   SizedBox(height: 30,),
-                  quizLevelButton(context, 3),
+                  quizLevelButton(context, 1),
                 ],
               ),
             )

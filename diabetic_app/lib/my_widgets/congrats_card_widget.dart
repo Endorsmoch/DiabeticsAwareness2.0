@@ -21,14 +21,16 @@ class CongratsCardWidget extends StatelessWidget{
   }
 
   void updateProgress() {
-    if(quizController.quizProgress.getMaxLevel() == quizController.quizProgress.getHealthyLevels()){
+    if((quizController.quizProgress.getMaxLevel() == quizController.quizProgress.getHealthyLevels()
+    && quizController.quizProgress.getMaxLevel() > this.level)
+    || quizController.quizProgress.getMaxLevel() == 0){
       quizController.quizProgress.increaseMaxLevel();
       quizController.quizProgress.increaseHealthyLevels();
-    } else {
+    } else if (quizController.quizProgress.getMaxLevel() > quizController.quizProgress.getHealthyLevels()){
       quizController.quizProgress.increaseHealthyLevels();
     }
     quizController.updateProgressJSONFile();
-    quizController.resetStage();
+    quizController.resetQuiz();
   }
   void goBackToQuizMenu(BuildContext context){
     updateProgress();

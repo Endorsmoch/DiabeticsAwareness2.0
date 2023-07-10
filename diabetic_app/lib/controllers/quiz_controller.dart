@@ -38,7 +38,7 @@ class QuizController {
   int getStage(){
     return stage;
   }
-  void resetStage() {
+  void resetQuiz() {
     this.stage = 0;
   }
 
