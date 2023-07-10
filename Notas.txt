@@ -1,0 +1,11 @@
+Funciones
+Apoyo entre pares - apoyo entre pares.
+Anotar datos de glucosa
+
+Minijuegos:
+Cuando llueva la comida deben poder identificarse los alimentos y las porciones. Imagen y letras (Nombre del alimento).
+Que le permita recordar cómo debe combinar alimentos.
+
+Varios niveles. Que haya "recompensa".
+
+(Flutter)
