@@ -92,7 +92,7 @@ class UserModel {
   }
 
   void setGender(String gender) {
-    if(gender == 'H' || gender == 'M') {
+    if(gender == 'H' || gender == 'M'|| gender == 'Otro') {
       this.gender = gender;
     }
   }
