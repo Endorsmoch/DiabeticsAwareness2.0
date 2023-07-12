@@ -44,7 +44,7 @@ class CongratsCardWidget extends StatelessWidget{
     return ElevatedButton(
       onPressed: () => shareWithFacebook(this.level),
       child: Text(
-          'Compartir en Facebook'
+          'Compartir mi logro'
       ),
     );
   }
