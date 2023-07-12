@@ -235,11 +235,22 @@ class _ConfigPageState extends State<ConfigPage> {
       );
   }
 
+  void returnToMenu(BuildContext context) {
+    Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => HomePage())
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: _title("Configuración"),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () => returnToMenu(context),
+        ),
         actions: [
           Padding(
             padding: EdgeInsets.only(right: 10),
